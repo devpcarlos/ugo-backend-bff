@@ -1,4 +1,4 @@
-package com.ugoTurista;
+package com.ugo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
