@@ -1,7 +1,7 @@
 package com.ugo.controller;
 
-import com.ugo.services.rolesService;
-import com.ugo.entitys.roles;
+import com.ugo.services.RolesService;
+import com.ugo.entitys.Roles;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class RolesControl {
 
     @Autowired
-    private rolesService rs;
+    private RolesService rs;
 
     @PostMapping("/save-roles")
-    public ResponseEntity<?> saveRoles(@Valid @RequestBody roles role, BindingResult result){
+    public ResponseEntity<?> saveRoles(@Valid @RequestBody Roles role, BindingResult result){
         if(result.hasErrors()){
             List<String>errorMessage = result.getAllErrors()
                     .stream()
