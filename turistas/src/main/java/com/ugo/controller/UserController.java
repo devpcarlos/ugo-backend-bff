@@ -29,5 +29,5 @@ public class UserController {
         userS.saveUser(user);
         return ResponseEntity.ok("Los usuarios fueron guardados");
     }
-
+ 
 }
