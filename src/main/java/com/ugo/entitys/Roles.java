@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class roles {
+public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class roles {
     private String role_name;
 
     @OneToMany(mappedBy = "role_id")
-    private List<users>users;
+    private List<Users>users;
 
 
 }

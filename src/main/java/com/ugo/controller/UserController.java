@@ -1,7 +1,7 @@
 package com.ugo.controller;
 
-import com.ugo.entitys.users;
-import com.ugo.services.userService;
+import com.ugo.entitys.Users;
+import com.ugo.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private userService userS;
+    private UserService userS;
 
-    public ResponseEntity<?>saveUser(@Valid @RequestBody users user, BindingResult result){
+    public ResponseEntity<?>saveUser(@Valid @RequestBody Users user, BindingResult result){
         if(result.hasErrors()){
             List<String> errorMessage = result.getAllErrors()
                     .stream()

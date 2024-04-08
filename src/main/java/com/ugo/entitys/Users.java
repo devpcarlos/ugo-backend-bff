@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class users {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +48,6 @@ public class users {
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private roles role_id;
+    private Roles role_id;
 
 }

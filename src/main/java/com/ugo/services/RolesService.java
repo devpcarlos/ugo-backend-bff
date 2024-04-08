@@ -1,17 +1,17 @@
 package com.ugo.services;
 
-import com.ugo.repository.rolesRepository;
-import com.ugo.entitys.roles;
+import com.ugo.repository.RolesRepository;
+import com.ugo.entitys.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class rolesService {
+public class RolesService {
 
     @Autowired
-    private rolesRepository rsp;
+    private RolesRepository rsp;
 
-    public void saveRoles(roles role){
+    public void saveRoles(Roles role){
         rsp.save(role);
     }
 
