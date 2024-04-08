@@ -7,27 +7,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@RestController
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
     private UserService userS;
 
-    public ResponseEntity<?>saveUser(@Valid @RequestBody Users user, BindingResult result){
-        if(result.hasErrors()){
-            List<String> errorMessage = result.getAllErrors()
-                    .stream()
-                    .map(objectError -> objectError.getDefaultMessage())
-                    .collect(Collectors.toList());
-            return ResponseEntity.badRequest().body(errorMessage);
-        }
-        userS.saveUser(user);
-        return ResponseEntity.ok("Los usuarios fueron guardados");
+    @PostMapping("/create")
+    public ResponseEntity<?>saveUser( @Valid @RequestBody Users user, BindingResult result){
+       return userS.saveUser(user, result);
     }
- 
+
+    @GetMapping("/all")
+    public List<Users>listAll(){
+        return userS.getAll();
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<?> getName( @RequestParam ("name") String name){
+       return userS.getName(name);
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?>deleteUser(@PathVariable Long id){
+       return userS.deleteById(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser( @PathVariable Long id, @Valid @RequestBody Users user, BindingResult result){
+        return userS.updateUser(id, user,result);
+    }
+
 }
