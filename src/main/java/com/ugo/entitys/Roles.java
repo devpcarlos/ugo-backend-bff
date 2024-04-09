@@ -16,13 +16,12 @@ public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Column(length = 15)
     private String role_name;
 
-    @OneToMany(mappedBy = "role_id")
-    private List<Users>users;
-
+    @OneToMany(targetEntity = User.class, mappedBy = "roleId", fetch = FetchType.LAZY)
+    private List<User>users;
 
 }
