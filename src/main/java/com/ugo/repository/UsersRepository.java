@@ -1,8 +1,12 @@
 package com.ugo.repository;
 
-import com.ugo.entitys.Users;
+import com.ugo.dto.UserDto;
+import com.ugo.entitys.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsersRepository extends JpaRepository<Users, Long> {
-    Users findByNombre(String nombre);
+import java.util.List;
+
+public interface UsersRepository extends JpaRepository<User, Long> {
+    List<User> findByNombre(String nombre);
+    boolean existsByEmail(String email);
 }
