@@ -17,14 +17,12 @@ public class StateController {
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-        stateService.findAll();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(stateService.findAll());
     }
 
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        stateService.findById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(stateService.findById(id));
     }
 
     @PostMapping("/save")
@@ -33,15 +31,15 @@ public class StateController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody StateDTO stateDTO) {
         stateService.update(id, stateDTO);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("STATUS SUCCESSFULLY UPDATED");
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         stateService.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("SUCCESSFULLY DELETED STATUS");
     }
 }
