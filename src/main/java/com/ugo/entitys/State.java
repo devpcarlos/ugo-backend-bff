@@ -19,6 +19,8 @@ public class State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //I changed to IdState because in that way use the referencecolumn it would be more easier.
+    @Column(name = "IdState")
     private Long id;
 
     private String name;
