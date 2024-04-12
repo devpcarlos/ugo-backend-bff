@@ -6,7 +6,6 @@ import com.ugo.exceptions.CustomerException;
 import com.ugo.repository.IStateRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -66,10 +65,11 @@ public class StateService implements IStateService {
     public void update(Long id, StateDTO stateDTO) {
         Optional<State> state = stateRepository.findById(id);
         if (state.isPresent()) {
+            State s = state.get();
             stateRepository.save(State.builder()
                     .id(stateDTO.getId())
                     .name(stateDTO.getName())
-                    .created(stateDTO.getCreated())
+                    .created(s.getCreated())
                     .updated(new Date(System.currentTimeMillis()))
                     .build());
         } else {
