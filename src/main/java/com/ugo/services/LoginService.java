@@ -1,5 +1,7 @@
 package com.ugo.services;
 
+import com.ugo.AuthController.AuthResponse;
+import com.ugo.AuthController.LoginRequest;
 import com.ugo.dto.UserDto;
 import com.ugo.entitys.User;
 import com.ugo.repository.UsersRepository;
@@ -37,5 +39,6 @@ public class LoginService {
         // Si las credenciales son válidas, devolver una respuesta exitosa
         return ResponseEntity.ok("Login exitoso para el usuario " + email);
     }
+
 
 }
