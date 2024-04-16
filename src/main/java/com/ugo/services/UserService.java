@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -45,10 +46,10 @@ public class UserService {
                 return ResponseEntity.badRequest().body("El rol especificado no existe");
             }
 
-
         if(urs.existsByEmail(user.getEmail())){
             return ResponseEntity.badRequest().body("Este email ya hiciste");
         }
+        String passwordEncript = new BCryptPasswordEncoder().encode(user.getPassword());
 
         urs.save(User.builder()
                 .nombre(user.getNombre())
@@ -56,7 +57,7 @@ public class UserService {
                 .apellidoMaterno(user.getApellidoMaterno())
                 .email(user.getEmail())
                 .emailConfirmed(false)
-                .password(user.getPassword())
+                .password(passwordEncript)
                 .created(LocalDateTime.now())
                 .updated(LocalDateTime.now())
                 .roleId(role)
