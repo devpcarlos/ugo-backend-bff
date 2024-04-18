@@ -19,11 +19,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
+
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     /**
      * Lista blanca de URIs
      */
-    private List<String> urlsToSkip = List.of("/auth");
+    private List<String> urlsToSkip = List.of("/auth/**", "/auth/ogin","/user/create");
 
     /**
      * Verifica si a la URI no se le debe aplicar el filtro
@@ -71,6 +72,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
-
 }

@@ -1,8 +1,7 @@
 package com.ugo.dto;
 
 import lombok.*;
-
-@Getter @Setter
+@Data
 public class AuthUserDto {
     String email ;
     String password;

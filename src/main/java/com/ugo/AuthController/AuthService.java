@@ -16,6 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService implements IAuthUseCase {
+
     private final UsersRepository usersRepository;
 
     /**

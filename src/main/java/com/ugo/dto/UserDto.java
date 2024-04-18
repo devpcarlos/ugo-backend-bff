@@ -24,7 +24,7 @@ public class UserDto {
     private String email;
 
     @NotBlank(message = "El campo contraseña no puede estar vacio")
-    @Size(min=8, max = 15, message = "La contraseña debe tener entre 8 y 15 caracteres")
+    @Size(min=8, max = 255, message = "La contraseña debe tener entre 8 y 15 caracteres")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()\\-\\[{}\\]:;',?/*~$^+=<>.]).{8,14}$", message = "Formato de password no válido")
     private String password;
 

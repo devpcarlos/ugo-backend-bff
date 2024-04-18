@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class   AuthController {
     private final IAuthUseCase iAuthUseCase;
-    @PostMapping(path = "/LogIn")
+    @PostMapping(path = "/ogin")
     public ResponseEntity<AuthResponseDto> signIn(@RequestBody AuthUserDto authUserDto) {
         return ResponseEntity.ok(iAuthUseCase.signIn(authUserDto));
     }
 
-    @PostMapping(path = "/LogOut")
+    @PostMapping(path = "/logout")
     public ResponseEntity<AuthResponseDto> signOut(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String jwt) {
         return ResponseEntity.ok(iAuthUseCase.signOut(jwt));
     }
