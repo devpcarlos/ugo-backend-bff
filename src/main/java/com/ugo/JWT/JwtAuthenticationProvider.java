@@ -2,6 +2,7 @@ package com.ugo.JWT;
 
 import com.auth0.jwt.JWT;
 import com.ugo.dto.UserDto;
+import com.ugo.entitys.User;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,13 +30,13 @@ public class JwtAuthenticationProvider {
     /**
      * Lista blanca con los jwt creados
      */
-    private HashMap<String, UserDto> listToken = new HashMap<>();
+    private HashMap<String, User> listToken = new HashMap<>();
     /**
      * Crea un nuevo jwt en base al cliente recibido por parametro y lo agrega a la lista blanca
      * @param UserJwt Cliente a utilizar en la creacion del jwt
      * @return Jwt creado
      */
-    public String createToken(UserDto UserJwt) {
+    public String createToken(User UserJwt) {
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000); // 1 hora en milisegundos
@@ -45,8 +46,7 @@ public class JwtAuthenticationProvider {
         String tokenCreated = JWT.create()
                 .withClaim("FirstName", UserJwt.getNombre())
                 .withClaim("LastName",UserJwt.getApellidoPaterno())
-                .withClaim("email", UserJwt.getEmail())
-                .withClaim("rol", UserJwt.getRoleId())
+                .withClaim("RoleId",UserJwt.getRoleId().getId())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .sign(algorithm);
@@ -71,7 +71,7 @@ public class JwtAuthenticationProvider {
         JWT.require(Algorithm.HMAC256(SecretKey)).build().verify(token);
 
 
-        UserDto exists = listToken.get(token);
+        User exists = listToken.get(token);
         if (exists == null) {
             throw new BadCredentialsException("Usuario no registrado.");
         }
@@ -97,5 +97,5 @@ public class JwtAuthenticationProvider {
         listToken.remove(jwt);
         return "Sesión cerrada exitosamente";
     }
-
 }
+

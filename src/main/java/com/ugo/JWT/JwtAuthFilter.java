@@ -24,7 +24,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * Lista blanca de URIs
      */
-    private List<String> urlsToSkip = List.of("/auth/**", "/auth/ogin","/user/create");
+    private List<String> urlsToSkip = List.of("/auth/**", "/auth/login","/user/create","/user/all");
 
     /**
      * Verifica si a la URI no se le debe aplicar el filtro
@@ -33,8 +33,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      // @throws ServletException
      */
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        System.out.println("en esta peticion se rompe");
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        System.out.println("no se hace el filtro, la url esta permitida");
         System.out.println(request.getRequestURI());
         return urlsToSkip.stream().anyMatch(url -> request.getRequestURI().contains(url));
     }

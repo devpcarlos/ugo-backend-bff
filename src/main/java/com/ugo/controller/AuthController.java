@@ -1,4 +1,4 @@
-package com.ugo.AuthController;
+package com.ugo.controller;
 
 import com.ugo.JWT.IAuthUseCase;
 import com.ugo.dto.AuthResponseDto;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class   AuthController {
     private final IAuthUseCase iAuthUseCase;
-    @PostMapping(path = "/ogin")
+    @PostMapping(path = "/login")
     public ResponseEntity<AuthResponseDto> signIn(@RequestBody AuthUserDto authUserDto) {
         return ResponseEntity.ok(iAuthUseCase.signIn(authUserDto));
     }

@@ -33,3 +33,4 @@ public class UserDto {
     @NotNull( message = "El rolId es obligatorio")
     private Long roleId;
 }
+

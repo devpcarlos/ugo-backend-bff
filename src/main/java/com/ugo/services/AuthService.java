@@ -1,10 +1,11 @@
-package com.ugo.AuthController;
+package com.ugo.services;
 
 import com.ugo.JWT.IAuthUseCase;
 import com.ugo.JWT.JwtAuthenticationProvider;
 import com.ugo.dto.AuthResponseDto;
 import com.ugo.dto.AuthUserDto;
 import com.ugo.dto.UserDto;
+import com.ugo.entitys.User;
 import com.ugo.exceptions.CustomerException;
 import com.ugo.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,18 +37,18 @@ public class AuthService implements IAuthUseCase {
      */
     public AuthResponseDto signIn(AuthUserDto authUserDto) {
 
-        Optional<UserDto>User = usersRepository.findByEmail(authUserDto.getEmail());
-
-        if (User.isEmpty()) {
+        Optional<User> user = usersRepository.findByEmail(authUserDto.getEmail());
+        //user.get().setr
+        if (user.isEmpty()) {
             throw new CustomerException(404,"User do not exist");
         }
 
-        if (!passwordEncoder.matches(authUserDto.getPassword(), User.get().getPassword())) {
+        if (!passwordEncoder.matches(authUserDto.getPassword(), user.get().getPassword())) {
             throw new CustomerException(404,"Incorrect password");
         }
 
 
-        return new AuthResponseDto(jwtAuthenticationProvider.createToken(User.get()));
+        return new AuthResponseDto(jwtAuthenticationProvider.createToken(user.get()));
     }
 
     @Override

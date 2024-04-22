@@ -24,19 +24,21 @@ public class SecurityConfig {
         http
                 // Deshabilita la protección CSRF (Cross-Site Request Forgery) para el uso de JWT
                 .csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(authRequest->
-                        authRequest
-                                .requestMatchers("/auth/**","/auth/ogin" ).permitAll()
-                                .requestMatchers("/user/create").permitAll()
-                                .anyRequest().authenticated()
-                )
                 // Configura la gestión de sesiones, en este caso la aplicación no creará ni utilizará sesiones HTTP
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 // Añade el filtro que hemos creado para ejecutarse antes del filtro predeterminado
                 . addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(withDefaults());
+
+                .authorizeHttpRequests(authRequest->
+                        authRequest
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/auth/login" ).permitAll()
+                                .requestMatchers("/user/create").permitAll()
+                                .requestMatchers("/user/all").permitAll()
+                                .anyRequest().authenticated()
+                );
 
         return  http.build();
 
