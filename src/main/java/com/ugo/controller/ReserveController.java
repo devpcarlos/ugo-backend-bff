@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/Reserve")
+@RequestMapping(path = "/reserve")
 public class ReserveController {
     @Autowired
     ReserveServiceIMPL reserveServiceIMPL;
@@ -41,7 +41,7 @@ public class ReserveController {
         return ResponseEntity.ok("Successfully deleted!");
     }
 
-    @PutMapping("/Update/{Id}")
+    @PutMapping("/update/{Id}")
     public ResponseEntity<?>Update(@PathVariable Long Id,@RequestBody ReserveDTO reserveDTO){
         reserveServiceIMPL.Update(Id,reserveDTO);
         return ResponseEntity.ok("Status Updated");
