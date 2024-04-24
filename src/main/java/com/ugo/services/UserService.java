@@ -128,15 +128,15 @@ public class UserService {
         existingUser.setEmail(user.getEmail());
         existingUser.setUpdated(LocalDateTime.now());
 
-        //!!No se puede cambiar el rol del usuario por mas que se actualice !!
+//        !!No se puede cambiar el rol del usuario por mas que se actualice !!
 //         Obtener el objeto Roles correspondiente al ID proporcionado en el DTO
-//        Set<Roles> role = roles.findByRoleName(user.getRoleId()).orElse(null);
-//        if (role == null) {
-//            return ResponseEntity.badRequest().body("El rol especificado no existe");
-//        }
-//
-//        // Asignar el objeto Roles al usuario actualizado
-//        existingUser.setRoleId(role);
+        Roles role = roles.findByRoleName(user.getRoleId().toString()).orElse(null);
+        if (role == null) {
+            return ResponseEntity.badRequest().body("El rol especificado no existe");
+        }
+
+        // Asignar el objeto Roles al usuario actualizado
+        existingUser.setRoleId(Set.of(role));
 
         urs.save(existingUser);
         return ResponseEntity.ok("El usuario fue actualizado");
