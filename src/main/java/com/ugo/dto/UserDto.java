@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -31,5 +32,10 @@ public class UserDto {
     private LocalDateTime updated;
 
     @NotNull( message = "El rolId es obligatorio")
-    private Long roleId;
+    private Set<Roles> roleId;
+
+    private boolean IsAccountNoTLocked;
+    private boolean IsCredentialNoExpired;
+    private boolean IsEnable;
+    private boolean IsAccountNoTExpired;
 }

@@ -45,7 +45,7 @@ public class RolesService {
 
     public ResponseEntity<?> searchRoles(String name){
         try {
-        List<Roles> role = rsp.findByRoleName(name);
+        Optional<Roles> role = rsp.findByRoleName(name);
 
         if (role.isEmpty()){
             ResponseEntity.badRequest().body("El role no existe");
@@ -63,8 +63,8 @@ public class RolesService {
 
     }
 
-    public ResponseEntity<?> findById(Long Id){
-        Optional<Roles> OptionRole = rsp.findById(Id);
+    public ResponseEntity<?> findById(Long id){
+        Optional<Roles> OptionRole = rsp.findById(id);
         if (OptionRole.isPresent()){
             Roles role = OptionRole.get();
             RolesDto rolesDto = RolesDto.builder()

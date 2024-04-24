@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +40,7 @@ public class UserService {
             return ResponseEntity.badRequest().body(errorMessage);
         }
 
-        Roles role = roles.findById(user.getRoleId()).orElse(null);
+        Roles role = roles.findByRoleName(user.getRoleId().toString()).orElse(null);
             if (role == null) {
                 // Maneja el caso en que no se encuentra el rol
                 return ResponseEntity.badRequest().body("El rol especificado no existe");
@@ -59,7 +60,7 @@ public class UserService {
                 .password(user.getPassword())
                 .created(LocalDateTime.now())
                 .updated(LocalDateTime.now())
-                .roleId(role)
+                .roleId(user.getRoleId())
                         .build()
                 );
         return ResponseEntity.ok("El usuario fue guardado");
@@ -82,7 +83,7 @@ public class UserService {
 
     public ResponseEntity<?> searchName(String nombre) {
         try {
-            List<User> user = urs.findByNombre(nombre);
+            Optional<User> user = urs.findByNombre(nombre);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con el nombre proporcionado no existe");
             }
@@ -127,14 +128,15 @@ public class UserService {
         existingUser.setEmail(user.getEmail());
         existingUser.setUpdated(LocalDateTime.now());
 
-        // Obtener el objeto Roles correspondiente al ID proporcionado en el DTO
-        Roles role = roles.findById(user.getRoleId()).orElse(null);
-        if (role == null) {
-            return ResponseEntity.badRequest().body("El rol especificado no existe");
-        }
-
-        // Asignar el objeto Roles al usuario actualizado
-        existingUser.setRoleId(role);
+        //!!No se puede cambiar el rol del usuario por mas que se actualice !!
+//         Obtener el objeto Roles correspondiente al ID proporcionado en el DTO
+//        Set<Roles> role = roles.findByRoleName(user.getRoleId()).orElse(null);
+//        if (role == null) {
+//            return ResponseEntity.badRequest().body("El rol especificado no existe");
+//        }
+//
+//        // Asignar el objeto Roles al usuario actualizado
+//        existingUser.setRoleId(role);
 
         urs.save(existingUser);
         return ResponseEntity.ok("El usuario fue actualizado");

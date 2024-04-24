@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -24,11 +27,13 @@ public class User {
     private String password;
     private Boolean emailConfirmed;
     private LocalDateTime created;
-    private LocalDateTime updated;
-
-    @ManyToOne(targetEntity = Roles.class)
-    @JoinColumn(name = "roleId")
+    private LocalDateTime  updated;
+    @ManyToOne(targetEntity = Roles.class,fetch = FetchType.EAGER)
+    @JoinTable(name = "User_Roles", joinColumns = @JoinColumn(name = "User_id"),inverseJoinColumns = @JoinColumn(name = "Rol_id"))
     @JsonIgnore
-    private Roles roleId;
-
+    private Set<Roles> roleId = new HashSet<>();
+    private boolean IsAccountNoTLocked;
+    private boolean IsCredentialNOExpired;
+    private boolean IsEnable;
+    private boolean IsAccountNoTExpired;
 }
