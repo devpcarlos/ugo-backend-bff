@@ -1,14 +1,15 @@
 package com.ugo;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+
 @SpringBootApplication
 public class TuristasApplication {
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
@@ -17,5 +18,4 @@ public class TuristasApplication {
     public static void main(String[] args) {
         SpringApplication.run(TuristasApplication.class, args);
     }
-
-}
+    }
