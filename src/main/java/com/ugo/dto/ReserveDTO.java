@@ -2,6 +2,7 @@ package com.ugo.dto;
 
 import com.ugo.entitys.State;
 import com.ugo.entitys.User;
+import com.ugo.entitys.external.Experience;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,9 @@ public class ReserveDTO {
     @NotNull
     private int floor;
     @NotNull
-    private State state;
+    private Long state;
     @NotNull
-    private User ReserveOwner;
+    private Long ReserveOwner;
+    @NotNull
+    private Experience experience;
 }

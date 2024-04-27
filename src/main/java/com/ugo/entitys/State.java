@@ -28,4 +28,7 @@ public class State {
     private Date created;
 
     private Date updated;
+
+    @OneToOne(targetEntity = Reserve.class,fetch = FetchType.LAZY)
+    private Reserve reserve;
 }

@@ -1,9 +1,13 @@
 package com.ugo.services;
 
 import com.ugo.dto.ReserveDTO;
+import com.ugo.dto.StateDTO;
 import com.ugo.entitys.Reserve;
+import com.ugo.entitys.State;
+import com.ugo.entitys.User;
 import com.ugo.exceptions.ReserveException;
 import com.ugo.repository.IReserveRepository;
+import com.ugo.repository.UsersRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,11 @@ import java.util.Optional;
 @Service
 public class ReserveServiceIMPL implements IReserveService {
     @Autowired
+    UserService US;
+    @Autowired
     IReserveRepository ReserveRepo;
+    @Autowired
+    StateServiceImpl SS;
 
     @Override
     public List<ReserveDTO>FindAll(){
@@ -24,11 +32,12 @@ public class ReserveServiceIMPL implements IReserveService {
                 .map(Reserve -> ReserveDTO.builder()
                         .Id(Reserve.getId())
                         .CreationDate(Reserve.getCreationDate())
-                        .ReserveOwner(Reserve.getReserveOwner())
+                        .ReserveOwner(Reserve.getReserveOwner().getId())
                         .Currency(Reserve.getCurrency())
                         .Duration(Reserve.getDuration())
                         .floor(Reserve.getFloor())
-                        .state(Reserve.getState())
+                        .state(Reserve.getState().getId())
+                        .experience(Reserve.getExperience())
                         .build())
                 .toList();
                 return ReserveDtoList;
@@ -41,12 +50,13 @@ public class ReserveServiceIMPL implements IReserveService {
              Reserve reserve = reserveOptional.get();
              ReserveDTO reserveDTO = ReserveDTO.builder()
                      .Id(reserve.getId())
-                     .ReserveOwner(reserve.getReserveOwner())
+                     .ReserveOwner(reserve.getReserveOwner().getId())
                      .CreationDate(reserve.getCreationDate())
                      .Duration(reserve.getDuration())
                      .Currency(reserve.getCurrency())
                      .floor(reserve.getFloor())
-                     .state(reserve.getState())
+                     .state(reserve.getState().getId())
+                     .experience(reserve.getExperience())
                      .build();
              return reserveDTO;
          }
@@ -57,6 +67,8 @@ public class ReserveServiceIMPL implements IReserveService {
 
     @Override
     public void Save(ReserveDTO reserveDTO, HttpServletRequest request){
+        State state = SS.findById(reserveDTO.getState());
+        User user = US.findById(reserveDTO.getReserveOwner());
         if(
                 reserveDTO.getCurrency().isBlank() &&
                         reserveDTO.getReserveOwner()==null &&
@@ -64,20 +76,24 @@ public class ReserveServiceIMPL implements IReserveService {
                         reserveDTO.getDuration()==0
         ){throw new ReserveException(400,"Incorrect status");}
             else {
+
                 ReserveRepo.save(Reserve.builder()
                             .Duration(reserveDTO.getDuration())
                             .CreationDate(new Date(System.currentTimeMillis()))
                             .UpdateDate(new Date(System.currentTimeMillis()))
-                            .ReserveOwner(reserveDTO.getReserveOwner())
-                            .state(reserveDTO.getState())
+                            .ReserveOwner(user)
+                            .state(state)
                             .floor(reserveDTO.getFloor())
                             .Currency(reserveDTO.getCurrency())
+                            .experience(reserveDTO.getExperience())
                     .build()
                 );
             }
         }
     @Override
     public void Update(Long Id,ReserveDTO reserveDTO){
+        State state = SS.findById(reserveDTO.getState());
+        User user = US.findById(reserveDTO.getReserveOwner());
         Optional<Reserve>reserveOptional=ReserveRepo.findById(Id);
         if(reserveOptional.isPresent())
         {
@@ -85,10 +101,11 @@ public class ReserveServiceIMPL implements IReserveService {
                     .Duration(reserveDTO.getDuration())
                     .CreationDate(new Date(System.currentTimeMillis()))
                     .UpdateDate(new Date(System.currentTimeMillis()))
-                    .ReserveOwner(reserveDTO.getReserveOwner())
-                    .state(reserveDTO.getState())
+                    .ReserveOwner(user)
+                    .state(state)
                     .floor(reserveDTO.getFloor())
                     .Currency(reserveDTO.getCurrency())
+                    .experience(reserveDTO.getExperience())
                     .build());
             }
         else {

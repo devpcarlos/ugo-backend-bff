@@ -1,12 +1,15 @@
 package com.ugo.services;
 
 
+import com.ugo.dto.RolesDto;
 import com.ugo.dto.UserDto;
 import com.ugo.entitys.Roles;
 import com.ugo.entitys.User;
+import com.ugo.exceptions.CustomerException;
 import com.ugo.repository.RolesRepository;
 import com.ugo.repository.UsersRepository;
 import jakarta.validation.Valid;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +33,8 @@ public class UserService {
     private RolesRepository roles;
 
 
-    public ResponseEntity<?> saveUser(@Valid UserDto user, BindingResult result){
-        if(result.hasErrors()){
+    public ResponseEntity<?> saveUser(@Valid UserDto user, BindingResult result) {
+        if (result.hasErrors()) {
             List<String> errorMessage = result.getAllErrors()
                     .stream()
                     .map(objectError -> objectError.getDefaultMessage())
@@ -40,13 +43,13 @@ public class UserService {
         }
 
         Roles role = roles.findById(user.getRoleId()).orElse(null);
-            if (role == null) {
-                // Maneja el caso en que no se encuentra el rol
-                return ResponseEntity.badRequest().body("El rol especificado no existe");
-            }
+        if (role == null) {
+            // Maneja el caso en que no se encuentra el rol
+            return ResponseEntity.badRequest().body("El rol especificado no existe");
+        }
 
 
-        if(urs.existsByEmail(user.getEmail())){
+        if (urs.existsByEmail(user.getEmail())) {
             return ResponseEntity.badRequest().body("Este email ya hiciste");
         }
 
@@ -60,22 +63,22 @@ public class UserService {
                 .created(LocalDateTime.now())
                 .updated(LocalDateTime.now())
                 .roleId(role)
-                        .build()
-                );
+                .build()
+        );
         return ResponseEntity.ok("El usuario fue guardado");
     }
 
-    public List<UserDto> getAll(){
-        List<UserDto> lista= urs.findAll()
+    public List<UserDto> getAll() {
+        List<UserDto> lista = urs.findAll()
                 .stream()
-                .map(User->UserDto.builder()
+                .map(User -> UserDto.builder()
                         .nombre(User.getNombre())
                         .apellidoPaterno(User.getApellidoPaterno())
                         .apellidoMaterno(User.getApellidoMaterno())
                         .build())
                 .toList();
-        if (lista.isEmpty()){
-             ResponseEntity.badRequest().body("No se encontraron usuarios en la base de datos");
+        if (lista.isEmpty()) {
+            ResponseEntity.badRequest().body("No se encontraron usuarios en la base de datos");
         }
         return lista;
     }
@@ -89,12 +92,12 @@ public class UserService {
 
             List<UserDto> dto = user.stream()
                     .map(users -> UserDto.builder()
-                    .nombre(users.getNombre())
-                    .apellidoPaterno(users.getApellidoPaterno())
-                    .apellidoMaterno(users.getApellidoMaterno())
-                    .email(users.getEmail())
-                    .updated(users.getUpdated())
-                    .build())
+                            .nombre(users.getNombre())
+                            .apellidoPaterno(users.getApellidoPaterno())
+                            .apellidoMaterno(users.getApellidoMaterno())
+                            .email(users.getEmail())
+                            .updated(users.getUpdated())
+                            .build())
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(dto);
@@ -141,13 +144,27 @@ public class UserService {
 
     }
 
-    public ResponseEntity<?> deleteById(Long Id){
-        if (urs.existsById(Id)){
+    public ResponseEntity<?> deleteById(Long Id) {
+        if (urs.existsById(Id)) {
             urs.deleteById(Id);
             return ResponseEntity.ok("El usuario fue eliminado");
-        }else{
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con el ID proporcionado no existe");
         }
     }
 
+
+    public User findById(Long id) {
+        Optional<User> userOptional = urs.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            User userDto = User.builder()
+                    .nombre(user.getNombre())
+                    .apellidoPaterno(user.getApellidoPaterno())
+                    .email(user.getEmail())
+                    .build();
+            return userDto;
+        }
+        return null;
+    }
 }
