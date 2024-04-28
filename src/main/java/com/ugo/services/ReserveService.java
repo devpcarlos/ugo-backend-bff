@@ -1,72 +1,59 @@
 package com.ugo.services;
 
-import com.ugo.dto.ReserveDTO;
-import com.ugo.dto.StateDTO;
+import com.ugo.dto.reserveDetailsDto;
+import com.ugo.dto.reserveRequestDto;
 import com.ugo.entitys.Reserve;
 import com.ugo.entitys.State;
 import com.ugo.entitys.User;
 import com.ugo.exceptions.ReserveException;
 import com.ugo.repository.IReserveRepository;
-import com.ugo.repository.UsersRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 @Service
-public class ReserveServiceIMPL implements IReserveService {
+public class ReserveService implements IReserveService {
     @Autowired
     UserService US;
     @Autowired
     IReserveRepository ReserveRepo;
     @Autowired
     StateServiceImpl SS;
-
     @Override
-    public List<ReserveDTO>FindAll(){
-        List<ReserveDTO>ReserveDtoList = ReserveRepo.findAll()
+    public List<reserveRequestDto>FindAll(){
+        List<reserveRequestDto>ReserveDtoList = ReserveRepo.findAll()
                 .stream()
-                .map(Reserve -> ReserveDTO.builder()
-                        .Id(Reserve.getId())
-                        .CreationDate(Reserve.getCreationDate())
-                        .ReserveOwner(Reserve.getReserveOwner().getId())
-                        .Currency(Reserve.getCurrency())
-                        .Duration(Reserve.getDuration())
-                        .floor(Reserve.getFloor())
-                        .state(Reserve.getState().getId())
+                .map(Reserve -> reserveRequestDto.builder()
+                        .reserveDetails(Reserve.getReserveDetails())
+                        .pax(Reserve.getPax())
+                        .currency(Reserve.getCurrency())
+                        .duration(Reserve.getDuration())
                         .experience(Reserve.getExperience())
                         .build())
                 .toList();
                 return ReserveDtoList;
     }
-
     @Override
-    public ReserveDTO FindById(Long Id){
-         Optional<Reserve>reserveOptional = ReserveRepo.findById(Id);
-         if (reserveOptional.isPresent()){
-             Reserve reserve = reserveOptional.get();
-             ReserveDTO reserveDTO = ReserveDTO.builder()
-                     .Id(reserve.getId())
-                     .ReserveOwner(reserve.getReserveOwner().getId())
-                     .CreationDate(reserve.getCreationDate())
-                     .Duration(reserve.getDuration())
-                     .Currency(reserve.getCurrency())
-                     .floor(reserve.getFloor())
-                     .state(reserve.getState().getId())
+    public reserveRequestDto FindById(Long Id){
+         Optional<Reserve>ReserveRequestDto = ReserveRepo.findById(Id);
+         if (ReserveRequestDto.isPresent()){
+             Reserve reserve = ReserveRequestDto.get();
+             reserveRequestDto reserveRequest = reserveRequestDto.builder()
+                     .duration(reserve.getDuration())
+                     .pax(reserve.getPax())
+                     .currency(reserve.getCurrency())
                      .experience(reserve.getExperience())
                      .build();
-             return reserveDTO;
+             return reserveRequest;
          }
-        else {
-            throw new ReserveException(404,"Incorrect Id");
+         else {
+             throw new ReserveException(500,"error");
          }
     }
-
     @Override
-    public void Save(ReserveDTO reserveDTO, HttpServletRequest request){
+    public void Save(reserveDetailsDto reserveDTO, HttpServletRequest request){
         State state = SS.findById(reserveDTO.getState());
         User user = US.findById(reserveDTO.getReserveOwner());
         if(
@@ -91,7 +78,7 @@ public class ReserveServiceIMPL implements IReserveService {
             }
         }
     @Override
-    public void Update(Long Id,ReserveDTO reserveDTO){
+    public void Update(Long Id,reserveDetailsDto reserveDTO){
         State state = SS.findById(reserveDTO.getState());
         User user = US.findById(reserveDTO.getReserveOwner());
         Optional<Reserve>reserveOptional=ReserveRepo.findById(Id);

@@ -31,7 +31,7 @@ public class Reserve {
     private int Duration;
     private int floor;
     @OneToOne( targetEntity = State.class,fetch = FetchType.LAZY)
-    @JoinTable(name = "Reserve_State",joinColumns = @JoinColumn(name = "reserve_id"),inverseJoinColumns = @JoinColumn(name = "State_id"))
+    @JoinColumn(name = "state",referencedColumnName = "id")
     private State state;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -45,5 +45,7 @@ public class Reserve {
             referencedColumnName = "_id"
     )
     private Experience experience;
+    private String ReserveDetails;
+    private int Pax;
 
 }

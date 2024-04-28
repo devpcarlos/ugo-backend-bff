@@ -16,19 +16,10 @@ import java.util.Date;
 @Table(name = "state")
 
 public class State {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //I changed to IdState because in that way use the referencecolumn it would be more easier.
-    @Column(name = "IdState")
     private Long id;
-
     private String name;
-
     private Date created;
-
     private Date updated;
-
-    @OneToOne(targetEntity = Reserve.class,fetch = FetchType.LAZY)
-    private Reserve reserve;
 }
