@@ -1,7 +1,11 @@
 package com.ugo.entitys;
 
+import com.ugo.entitys.external.Experience;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -26,11 +30,8 @@ public class Reserve {
     private String Currency;
     private int Duration;
     private int floor;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "state",
-            referencedColumnName = "IdState"
-    )
+    @OneToOne( targetEntity = State.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "state",referencedColumnName = "id")
     private State state;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -38,5 +39,13 @@ public class Reserve {
             referencedColumnName = "id"
     )
     private User ReserveOwner;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @JoinColumn(
+            name = "Experience",
+            referencedColumnName = "_id"
+    )
+    private Experience experience;
+    private String ReserveDetails;
+    private int Pax;
 
 }

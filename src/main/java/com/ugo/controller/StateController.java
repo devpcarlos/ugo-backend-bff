@@ -1,7 +1,7 @@
 package com.ugo.controller;
 
 import com.ugo.dto.StateDTO;
-import com.ugo.services.StateService;
+import com.ugo.services.StateServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,33 +13,33 @@ import org.springframework.web.bind.annotation.*;
 public class StateController {
 
     @Autowired
-    private StateService stateService;
+    private StateServiceImpl stateServiceImpl;
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(stateService.findAll());
+        return ResponseEntity.ok(stateServiceImpl.findAll());
     }
 
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(stateService.findById(id));
+        return ResponseEntity.ok(stateServiceImpl.findById(id));
     }
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody StateDTO stateDTO, HttpServletRequest request) {
-        stateService.save(stateDTO, request);
+        stateServiceImpl.save(stateDTO, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody StateDTO stateDTO) {
-        stateService.update(id, stateDTO);
+        stateServiceImpl.update(id, stateDTO);
         return ResponseEntity.ok("STATUS SUCCESSFULLY UPDATED");
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        stateService.deleteById(id);
+        stateServiceImpl.deleteById(id);
         return ResponseEntity.ok("SUCCESSFULLY DELETED STATUS");
     }
 }

@@ -2,6 +2,7 @@ package com.ugo.dto;
 
 import com.ugo.entitys.State;
 import com.ugo.entitys.User;
+import com.ugo.entitys.external.Experience;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,18 +16,22 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReserveDTO {
-    private long Id;
-    private Date CreationDate;
-    private Date UpdateDate;
+public class reserveDetailsDto{
+    private long id;
+    private Date creationDate;
+    private Date updateDate;
     @NotNull
-    private String Currency;
+    private String currency;
     @NotNull
-    private int Duration;
+    private int duration;
     @NotNull
     private int floor;
     @NotNull
-    private State state;
+    private Long state;
     @NotNull
-    private User ReserveOwner;
+    private Long reserveOwner;
+    @NotNull
+    private Experience experience;
+    private String reserveDetails;
+    private int pax;
 }

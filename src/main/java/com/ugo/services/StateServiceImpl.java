@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StateService implements IStateService {
+public class StateServiceImpl implements IStateService {
 
     @Autowired
     private IStateRepository stateRepository;
@@ -45,22 +45,21 @@ public class StateService implements IStateService {
     }
 
     @Override
-    public StateDTO findById(Long id) {
+    public State findById(Long id) {
         Optional<State> stateOptional = stateRepository.findById(id);
         if (stateOptional.isPresent()) {
             State state = stateOptional.get();
-            StateDTO stateDTO = StateDTO.builder()
+            State statedt = State.builder()
                     .id(state.getId())
                     .name(state.getName())
                     .created(state.getCreated())
                     .updated(state.getUpdated())
                     .build();
-            return stateDTO;
+            return statedt;
         } else {
             throw new CustomerException(404, "INCORRECT ID");
         }
     }
-
     @Override
     public void update(Long id, StateDTO stateDTO) {
         Optional<State> state = stateRepository.findById(id);
