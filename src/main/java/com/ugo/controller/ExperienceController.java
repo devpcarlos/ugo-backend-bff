@@ -1,6 +1,7 @@
 package com.ugo.controller;
 
 import com.ugo.entitys.external.Experience;
+import com.ugo.entitys.external.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,12 @@ public class ExperienceController {
         String baseUrl = dataApiUrl + ":" + dataApiPort + "/experience/";
         ResponseEntity<Experience[]> experiences = restTemplate.getForEntity(baseUrl, Experience[].class);
         return ResponseEntity.ok(experiences.getBody());
+    }
+
+    @GetMapping("{experienceId}/review")
+    public ResponseEntity<?> getReviews(@PathVariable String experienceId) {
+        String baseUrl = dataApiUrl + ":" + dataApiPort + "/experience/";
+        Review[] reviews = restTemplate.getForObject(baseUrl + experienceId + "/review", Review[].class);
+        return ResponseEntity.ok(reviews);
     }
 }
