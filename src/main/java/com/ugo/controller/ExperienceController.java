@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/experience")
 public class ExperienceController {
@@ -46,7 +49,26 @@ public class ExperienceController {
             baseUrl += "?category=" + category;
         }
         ResponseEntity<Experience[]> experiences = restTemplate.getForEntity(baseUrl, Experience[].class);
-        return ResponseEntity.ok(experiences.getBody());
+
+        // ************************************************************************
+        // BORRAR LA LINEA SIGUIENTE CUANDO EL DATA API DEVUELVA EL CAMPO IMAGE_URL
+        List<Experience> experiencesWithImages = Arrays
+                .stream(experiences.getBody())
+                .map(
+                        experience -> new Experience(
+                                experience._id(),
+                                experience.name(),
+                                experience.type(),
+                                experience.description(),
+                                experience.country(),
+                                experience.province(),
+                                experience.price_min(),
+                                experience.price_max(),
+                                "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1200,h=630,fit=crop,f=jpeg/mk3Ew9MwlbcqZJba/img-YbNxzkRwGaHlxOXV.jpg"))
+                .toList();
+        // ************************************************************************
+
+        return ResponseEntity.ok(experiencesWithImages);
     }
 
     @GetMapping("{experienceId}/review")
