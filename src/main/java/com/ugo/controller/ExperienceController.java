@@ -64,7 +64,9 @@ public class ExperienceController {
                                 experience.province(),
                                 experience.price_min(),
                                 experience.price_max(),
-                                "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1200,h=630,fit=crop,f=jpeg/mk3Ew9MwlbcqZJba/img-YbNxzkRwGaHlxOXV.jpg"))
+                                experience.discount(),
+                                experience.imageUrl()
+                                ))
                 .toList();
         // ************************************************************************
 
