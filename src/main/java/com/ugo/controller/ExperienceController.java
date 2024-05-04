@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/experience")
 public class ExperienceController {
@@ -49,28 +46,7 @@ public class ExperienceController {
             baseUrl += "?category=" + category;
         }
         ResponseEntity<Experience[]> experiences = restTemplate.getForEntity(baseUrl, Experience[].class);
-
-        // ************************************************************************
-        // BORRAR LA LINEA SIGUIENTE CUANDO EL DATA API DEVUELVA EL CAMPO IMAGE_URL
-        List<Experience> experiencesWithImages = Arrays
-                .stream(experiences.getBody())
-                .map(
-                        experience -> new Experience(
-                                experience._id(),
-                                experience.name(),
-                                experience.type(),
-                                experience.description(),
-                                experience.country(),
-                                experience.province(),
-                                experience.price_min(),
-                                experience.price_max(),
-                                experience.discount(),
-                                experience.imageUrl()
-                                ))
-                .toList();
-        // ************************************************************************
-
-        return ResponseEntity.ok(experiencesWithImages);
+        return ResponseEntity.ok(experiences);
     }
 
     @GetMapping("{experienceId}/review")
