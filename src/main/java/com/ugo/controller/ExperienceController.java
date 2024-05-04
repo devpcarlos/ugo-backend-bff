@@ -46,7 +46,7 @@ public class ExperienceController {
             baseUrl += "?category=" + category;
         }
         ResponseEntity<Experience[]> experiences = restTemplate.getForEntity(baseUrl, Experience[].class);
-        return ResponseEntity.ok(experiences);
+        return ResponseEntity.ok(experiences.getBody());
     }
 
     @GetMapping("{experienceId}/review")
