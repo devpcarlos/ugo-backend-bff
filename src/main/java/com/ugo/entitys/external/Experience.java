@@ -12,6 +12,7 @@ public record Experience(
         String province,
         int price_min,
         int price_max,
+        int discount,
         String imageUrl
 ) {
 }
